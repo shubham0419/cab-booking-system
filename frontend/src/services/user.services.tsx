@@ -26,7 +26,7 @@ export default class UserServices {
     })
   }
 
-  static registerUser = (userData:UserData)=>{
+  static registerUser = (userData:User)=>{
     return new Promise<UserloginType>(async (resolve,reject)=>{
       try {
         let res = await axios.post(API_CONSTANTS.registerUser,userData);

@@ -15,7 +15,9 @@ app.get("/", (req, res) => {res.send("hii")});
 // routers
 const userRouter = require("./routes/user.route");
 const captainRouter = require("./routes/captain.route");
+const { currentUser } = require("./middlewares/auth.middleware");
 
+app.get("/current-user",currentUser);
 app.use("/user",userRouter);
 app.use("/captain",captainRouter);
 

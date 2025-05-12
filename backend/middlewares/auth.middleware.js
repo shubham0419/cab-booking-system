@@ -47,4 +47,24 @@ module.exports.authCaptain = async (req, res, next) => {
   } catch (error) {
     res.status(401).json({ message: error.message });
   }
-} 
+}
+
+module.exports.currentUser = async(req,res)=>{
+  try {
+    const token = req.cookies?.token || req.headers.authorization.split(" ")[1];
+    const decode =  jwt.verify(token, process.env.JWT_SECRET);
+    let currUser;
+
+    const user = await User.findById(decode._id);
+    const captain = await Captain.findById(decode._id);
+
+    if(user){
+      currUser=user;
+    }else{
+      currUser=captain;
+    }
+    return res.status(200).json({currUser});
+  } catch (error) {
+    res.status(400);
+  }
+}

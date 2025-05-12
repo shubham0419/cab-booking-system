@@ -23,9 +23,9 @@ const UserLogin: React.FC = () => {
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newUser = {
-      fullname: {
-        firstname: firstName,
-        lastname: lastName
+      fullName: {
+        firstName: firstName,
+        lastName: lastName
       },
       email: email,
       password: password
@@ -36,9 +36,9 @@ const UserLogin: React.FC = () => {
 
       if (response.status == "success") {
         const data = response.data
-        cookieUtils.setCookie("token",data.token,{expires:7});
+        cookieUtils.setCookie("cabtoken",data.token,{expires:7});
         dispatch(setUser(data.user));
-        router.push('/');
+        router.push('/home');
       }
 
       setEmail('')

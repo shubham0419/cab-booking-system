@@ -52,7 +52,7 @@ module.exports.registerCaptain = async (req, res) => {
     const token = captain.generateAuthToken();
     res.json(wrapperMessage("success", "captain registered successfully", { token, captain }));
   } catch (error) {
-    res.json(wrapperMessage("failed", error.message));
+    res.status(error.code || 500).json(wrapperMessage("failed", error.message));
   }
 }
 
@@ -93,7 +93,7 @@ module.exports.loginCaptain = async (req, res) => {
     })
     res.json(wrapperMessage("success","user logged in successfully",{token,user}))
   } catch (error) {
-    res.json(wrapperMessage("failed",error.message))
+    res.status(error.code || 500).json(wrapperMessage("failed",error.message))
   }
 }
 
@@ -104,7 +104,7 @@ module.exports.logoutCaptain = async (req,res)=>{
     await blacklistToken.create({token});
     res.json(wrapperMessage("success","user logged out successfully",{}))
   } catch (error) {
-    res.json(wrapperMessage("failed",error.message))
+    res.status(error.code || 500).json(wrapperMessage("failed",error.message))
   }
 }
 

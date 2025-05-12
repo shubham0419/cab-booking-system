@@ -33,8 +33,8 @@ const UserLogin: React.FC = () => {
       if (response.status=="success") {
         const data = response.data;
         dispatch(setCaptain(data.captain))
-        cookieUtils.setCookie("token",data.token,{expires:7});
-        router.push('/');
+        cookieUtils.setCookie("cabtoken",data.token,{expires:7});
+        router.push('/captain/home');
       }
       
       setEmail('')
