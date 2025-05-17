@@ -7,6 +7,7 @@ const Captain = require("../models/captain.model");
 
 module.exports.authUser = async (req, res, next) => {
   try {
+    
     const token = req.cookies?.token || req.headers.authorization.split(" ")[1];
     if (!token) {
       let err = new Error("Please provide token");
@@ -63,7 +64,7 @@ module.exports.currentUser = async(req,res)=>{
     }else{
       currUser=captain;
     }
-    return res.status(200).json({currUser});
+    return res.status(200).json({currUser,role:user?"user":"captain"});
   } catch (error) {
     res.status(400);
   }

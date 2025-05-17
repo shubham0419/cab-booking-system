@@ -13,15 +13,26 @@ app.use(cookieParser());
 app.get("/", (req, res) => {res.send("hii")});
 
 // routers
-const userRouter = require("./routes/user.route");
-const captainRouter = require("./routes/captain.route");
-const { currentUser } = require("./middlewares/auth.middleware");
+const userRouter = require("./routes/user.routes");
+const captainRouter = require("./routes/captain.routes");
+const mapsRouter = require("./routes/maps.routes");
+const rideRouter = require("./routes/ride.routes");
+const { currentUser, authUser } = require("./middlewares/auth.middleware");
 
 app.get("/current-user",currentUser);
 app.use("/user",userRouter);
 app.use("/captain",captainRouter);
+app.use("/maps",authUser,mapsRouter);
+app.use("/ride",rideRouter);
 
-app.listen(process.env.PORT ?? 4000, () =>{
+const { initializeSocket } = require("./socket");
+
+const http = require("http");
+const server = http.createServer(app);
+
+initializeSocket(server);
+
+server.listen(process.env.PORT ?? 4000, () =>{
   connectDB();
-  console.log("Server running on port " + process.env.PORT ?? 4000)
+  console.log("Server running on port " + (process.env.PORT ?? 4000));
 });

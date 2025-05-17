@@ -91,7 +91,7 @@ module.exports.loginCaptain = async (req, res) => {
       sameSite:process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 24 * 60 * 60 * 1000
     })
-    res.json(wrapperMessage("success","user logged in successfully",{token,user}))
+    res.json(wrapperMessage("success","user logged in successfully",{token,captain:user}))
   } catch (error) {
     res.status(error.code || 500).json(wrapperMessage("failed",error.message))
   }

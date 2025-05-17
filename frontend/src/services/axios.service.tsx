@@ -19,7 +19,7 @@ axiosObject.interceptors.request.use(
         }
         return null;
       }
-      config.headers.authorization = `Bearer ${getCookie("token")}`;
+      config.headers.authorization = `Bearer ${getCookie("cabtoken")}`;
       return config;
   },
   error => { 

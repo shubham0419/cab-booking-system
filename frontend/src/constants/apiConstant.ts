@@ -8,4 +8,12 @@ export default class API_CONSTANTS {
   static getCaptain = "/captain/profile";
   static loginCaptain = "/captain/login";
   static registerCaptain = "/captain/register";
+
+  static getCurrentUser = "/current-user";
+
+  static addressSuggestions = "/maps/get-suggestions";
+  static getRideFare = "/ride/get-fare";
+  static createRide = "/ride/create";
+  static confirmRide = "/ride/confirm-ride";
+  static startRide = "/ride/start-ride";
 }

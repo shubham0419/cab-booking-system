@@ -44,3 +44,11 @@ declare interface UpdateUserInput {
   password?: string;
   socketId?: string;
 }
+
+
+declare type currentUserResType = {
+  status:number,
+  message:string,
+  currUser:User | Captain,
+  role:string
+}
