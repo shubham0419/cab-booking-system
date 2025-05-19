@@ -8,7 +8,7 @@ const initialState: RideState = {
   ridePrice: null,
   activeInput: null,
   currentRide: null,
-  isLoading: false,
+  isLoading: true,
   error: null
 };
 
@@ -18,7 +18,6 @@ export const rideSlice = createSlice({
   reducers: {
     setCurrentRide: (state, action: PayloadAction<Ride>) => {
       state.currentRide = action.payload;
-      state.isLoading = false;
       state.error = null;
     },
 

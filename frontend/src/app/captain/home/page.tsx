@@ -67,7 +67,6 @@ const Page = () => {
     }, [captain]);
 
     onMessage('new-ride', (data) => {
-      console.log("object");
       dispatch(setCurrentRide(data))
       setIsBooking(true)
     })

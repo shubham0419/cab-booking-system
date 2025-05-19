@@ -18,7 +18,7 @@ const ConfirmRidePopup = ({ setConfirmRidePanel, setIsBooking }: { setConfirmRid
     if (res.status == "success") {
       setConfirmRidePanel(false);
       setIsBooking(false);
-      router.push("/captain/home");
+      router.push(`/captain/ride/${ride._id}`);
     }
   }
 

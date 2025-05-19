@@ -1,11 +1,18 @@
+"use client"
+import { onMessage } from '@/lib/socket';
 import { RootState } from '@/lib/store';
 import { Banknote, IndianRupee, MapPin, MapPinned } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import React from 'react'
 import { useSelector } from 'react-redux';
 
 const RideInfo = () => {
-
+  const router = useRouter();
   const ride = useSelector((state: RootState) => state.ride.currentRide) as Ride;
+
+  onMessage("ride-started", (data: any) => {
+    router.push(`/riding/${data.rideId}`);
+  })
 
   return (
     <>
@@ -26,7 +33,7 @@ const RideInfo = () => {
         <div className='flex justify-end'>
           <div>
             <p className='text-sm'>Share OTP</p>
-            {ride?.otp?.split("").map(num=>(<span key={num} className='bg-gray-100 border border-gray-400 px-2 py-1 text-xs'>{num}</span>))}
+            {ride?.otp?.split("").map((num,ind)=>(<span key={ind} className='bg-gray-100 border border-gray-400 px-2 py-1 text-xs'>{num}</span>))}
           </div>
         </div>
         <div className="flex items-center py-2 gap-4 border-b-2 border-gray-100 active:bg-gray-100">

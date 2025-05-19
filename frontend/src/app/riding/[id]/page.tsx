@@ -1,7 +1,33 @@
-import { Banknote, House, MapPinned } from 'lucide-react'
+"use client"
+import { setCurrentRide } from '@/lib/features/ride/rideSlice';
+import { RootState } from '@/lib/store';
+import RideServices from '@/services/ride.service';
+import { Banknote, House, IndianRupee, MapPinned } from 'lucide-react'
 import Link from 'next/link'
+import { useParams } from 'next/navigation';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
 
 const Page = () => {
+  const ride = useSelector((state: RootState) => state.ride.currentRide) as Ride;
+  const dispatch = useDispatch();
+  const rideService = RideServices;
+
+  const params = useParams();
+  const id = params.id as string;
+
+  const getRide = async () => {
+    const res = await rideService.rideInfo(id);
+    if (res.status == "success") {
+      dispatch(setCurrentRide(res.data.ride));
+    }
+  }
+
+  useEffect(() => {
+    getRide();
+  }, [id])
+
   return (
     <div className='h-screen bg-white text-black relative'>
       <Link href={"/home"} className='fixed top-5 right-3 p-2 bg-white rounded-full'>
@@ -15,8 +41,8 @@ const Page = () => {
         <div className='flex justify-between px-4 py-4'>
           <img className='h-12' src="https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_538,w_956/v1688398971/assets/29/fbb8b0-75b1-4e2a-8533-3a364e7042fa/original/UberSelect-White.png" alt="" />
           <div className='text-right'>
-            <h2 className='font-semibold'>Sarthak</h2>
-            <h4 className='text-lg font-semibold leading-4'>DL04 C9 7035</h4>
+            <h2 className='font-semibold'>{(ride?.captain as Captain)?.fullName?.firstName} {(ride?.captain as Captain)?.fullName?.lastName}</h2>
+            <h4 className='text-lg font-semibold leading-4'>{(ride?.captain as Captain)?.vehicle?.plate}</h4>
             <p className='text-xs font-semibold text-gray-400'>Maruti Suzuki Alto</p>
           </div>
         </div>
@@ -24,19 +50,18 @@ const Page = () => {
           <div className="flex items-center py-2 gap-4 border-b-2 border-gray-100 active:bg-gray-100">
             <div className='bg-[#eee] rounded-full p-2 flex justify-center items-center font-medium'><MapPinned size={18} /></div>
             <div>
-              <h2 className='text-lg font-semibold'>wz-283/74</h2>
-              <p className='text-xs text-gray-500'>maddi wali gali no. 3, vishnu garden, New Delhi</p>
-            </div>
+            <h2 className='font-semibold'>{ride?.destination}</h2>
+          </div>
           </div>
           <div className="flex items-center py-2 gap-4 border-b-2 border-gray-100 active:bg-gray-100">
             <div className='bg-[#eee] rounded-full p-2 flex justify-center items-center font-medium'><Banknote size={18} /></div>
             <div>
-              <h2 className='text-lg font-semibold'>$195</h2>
+              <h2 className='text-lg font-semibold flex items-center'><IndianRupee size={14}/>{ride?.fare}</h2>
               <p className='text-xs text-gray-500'>Cash</p>
             </div>
           </div>
         </div>
-        <button className='w-[90%] py-2 font-semibold text-white bg-green-600 rounded-lg ml-5 mt-10'>Make a payment</button>
+        <button className='w-[90%] py-2 font-semibold text-white bg-green-600 rounded-lg ml-5 mt-2'>Make a payment</button>
       </div>
     </div>
   )

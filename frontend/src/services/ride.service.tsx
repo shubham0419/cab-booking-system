@@ -67,11 +67,39 @@ export default class RideServices {
   static startRide = (rideId:string,otp:string)=>{
     return new Promise<CreateRideResType>(async (resolve,reject)=>{
       try {
-        let res = await axios.get(API_CONSTANTS.startRide,{
-          params:{
+        let res = await axios.post(API_CONSTANTS.startRide,{
             rideId,
             otp
-          },
+        });
+        if (res?.data?.status == "failed") return reject(res.data.message);
+        return resolve(JSON.parse(JSON.stringify(res.data)) as CreateRideResType);
+      } catch (error:any) {
+        return reject(error);
+      }
+    })
+  }
+  
+  static rideInfo = (rideId:string)=>{
+    return new Promise<CreateRideResType>(async (resolve,reject)=>{
+      try {
+        let res = await axios.get(API_CONSTANTS.getRide,{
+          params:{
+            rideId
+          }
+        });
+        if (res?.data?.status == "failed") throw res.data.message;
+        return resolve(JSON.parse(JSON.stringify(res.data)) as CreateRideResType);
+      } catch (error:any) {
+        return reject(error);
+      }
+    })
+  }
+
+  static endRide = (rideId:string)=>{
+    return new Promise<CreateRideResType>(async (resolve,reject)=>{
+      try {
+        let res = await axios.post(API_CONSTANTS.endRide,{
+            rideId,
         });
         if (res?.data?.status == "failed") return reject(res.data.message);
         return resolve(JSON.parse(JSON.stringify(res.data)) as CreateRideResType);

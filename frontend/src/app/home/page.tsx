@@ -8,10 +8,10 @@ import { ChevronDown } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 import RideInfo from '@/components/RideInfo';
 import { useDispatch, useSelector } from 'react-redux';
-import { setActiveInput, setDestination, setPickup } from '@/lib/features/ride/rideSlice';
+import { setActiveInput, setCurrentRide, setDestination, setLoading, setPickup } from '@/lib/features/ride/rideSlice';
 import { RootState } from '@/lib/store';
 import Loader from '@/components/Loader';
-import { sendMessage } from '@/lib/socket';
+import { onMessage, sendMessage } from '@/lib/socket';
 
 const Page = () => {
   const [panelOpen,setPanelOpen] = useState(false);
@@ -68,6 +68,7 @@ const Page = () => {
     if(!user) return;
     sendMessage("join", { userType: "user", userId:user?._id });
   }, [user]);
+
 
   return (
     <div className='h-screen relative'>

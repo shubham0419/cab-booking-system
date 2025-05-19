@@ -16,4 +16,6 @@ export default class API_CONSTANTS {
   static createRide = "/ride/create";
   static confirmRide = "/ride/confirm-ride";
   static startRide = "/ride/start-ride";
+  static endRide = "/ride/end-ride";
+  static getRide = "/ride/get-ride";
 }

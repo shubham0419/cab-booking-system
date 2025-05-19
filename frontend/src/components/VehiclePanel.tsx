@@ -30,7 +30,6 @@ const VehiclePanel = ({setBookingWaiting,setVehiclePanelOpen,vehiclePanelOpen}:{
     setVehiclePanelOpen(false);
     setBookingWaiting(true);
     dispatch(setSelectedVehicle(vehicle));
-    dispatch(setLoading(true));
     findRide(vehicle);
   }
 

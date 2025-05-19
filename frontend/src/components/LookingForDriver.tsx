@@ -1,8 +1,6 @@
 import { setCurrentRide, setLoading } from '@/lib/features/ride/rideSlice';
 import { onMessage } from '@/lib/socket';
-import RideServices from '@/services/ride.service';
 import { Banknote, MapPin, MapPinned, User } from 'lucide-react';
-import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 
 const vehicleImages = {
@@ -17,11 +15,12 @@ const LookingForDriver = () => {
   const vehicle = useSelector((state: any) => state.ride.selectedVehicle) as "car" | "moto" | "auto";
   const price = useSelector((state: any) => state.ride.ridePrice);
   const dispatch = useDispatch();
-
+  
   onMessage("ride-confirmed", (data: any) => {
-    dispatch(setCurrentRide(data));
-    dispatch(setLoading(false));
-  })
+      console.log(data);
+      dispatch(setCurrentRide(data));
+      dispatch(setLoading(false));
+    })
 
   return (
     <>
