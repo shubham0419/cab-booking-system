@@ -1,5 +1,7 @@
 "use client"
 import CompleteRide from '@/components/captain/CompleteRide';
+import LiveTracking from '@/components/LiveTracking';
+import RideTracking from '@/components/RideTracking';
 import { setCurrentRide } from '@/lib/features/ride/rideSlice';
 import RideServices from '@/services/ride.service';
 import { useGSAP } from '@gsap/react';
@@ -48,7 +50,7 @@ const Page = () => {
       </div>
 
       <div className='h-4/5'>
-        <img className='w-full h-full object-cover' src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif" alt="" />
+      <RideTracking/>
       </div>
       <div className='h-1/5 p-5 bg-yellow-400 flex justify-between items-center relative'>
         <ChevronUp onClick={() => setCompletePanel(true)} className='absolute top-1 left-[49%] scale-x-150 text-gray-500 ' />

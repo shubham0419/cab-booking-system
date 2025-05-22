@@ -8,6 +8,7 @@ const initialState: RideState = {
   ridePrice: null,
   activeInput: null,
   currentRide: null,
+  isEnded: null,
   isLoading: true,
   error: null
 };
@@ -39,6 +40,14 @@ export const rideSlice = createSlice({
 
     setRidePrice: (state, action: PayloadAction<number>) => {
       state.ridePrice = action.payload;
+    },
+
+    setRideEnded: (state, action: PayloadAction<boolean>) => {
+      state.isEnded = action.payload;
+    },
+
+    resetRideEnded: (state) => {
+      state.isEnded = null;
     },
     
     clearCurrentRide: (state) => {
@@ -113,6 +122,8 @@ export const {
   setActiveInput,
   setSelectedVehicle,
   setRidePrice,
+  setRideEnded,
+  resetRideEnded,
 } = rideSlice.actions;
 
 // Selectors

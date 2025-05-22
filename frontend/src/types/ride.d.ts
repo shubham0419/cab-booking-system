@@ -22,6 +22,7 @@ declare type RideInput = {
 
 declare type Ride = RideInput & {
   _id: string;
+  destnationCord:Location
   createdAt: string;
   updatedAt: string;
 };
@@ -42,6 +43,7 @@ declare type RideState = {
   ridePrice: number | null;
   currentRide: Ride | null;
   selectedVehicle: string | null;
+  isEnded: boolean | null;
   isLoading: boolean;
   error: string | null;
 };

@@ -2,11 +2,27 @@ import { Banknote, IndianRupee, MapPin, MapPinned } from 'lucide-react'
 import Link from 'next/link';
 import React, { useState } from 'react'
 import { Checkbox } from '../ui/checkbox';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import RideServices from '@/services/ride.service';
+import { clearCurrentRide, setCurrentRide, setRideEnded } from '@/lib/features/ride/rideSlice';
+import { useRouter } from 'next/navigation';
 
 const CompleteRide = () => {
   const [payment,setPayment] = useState(false);
   const ride = useSelector((state:any) => state.ride.currentRide) as Ride;
+  const dispatch = useDispatch();
+  const rideServices = RideServices;
+  const router = useRouter()
+
+  const rideFinished = async() => {
+    const res = await rideServices.endRide(ride._id);
+    if(res.status === "success"){
+      dispatch(clearCurrentRide());
+      dispatch(setRideEnded(true));
+      router.push("/captain/home");
+    }
+  }
+
   return (
     <>
       <h2 className='text-xl font-semibold mb-2 text-center'>Finish his ride</h2>
@@ -23,7 +39,7 @@ const CompleteRide = () => {
         <div className="flex items-center py-2 gap-4 border-b-2 border-gray-100 active:bg-gray-100">
           <div className='bg-[#eee] rounded-full p-2 flex justify-center items-center font-medium'><MapPin size={18}/></div>
           <div>
-                        <h2 className='font-semibold'>{ride?.pickup}</h2>
+            <h2 className='font-semibold'>{ride?.pickup}</h2>
           </div>
         </div>
         <div className="flex items-center py-2 gap-4 border-b-2 border-gray-100 active:bg-gray-100">
@@ -45,7 +61,7 @@ const CompleteRide = () => {
           <Checkbox onCheckedChange={()=>setPayment(prev=>!prev)} className={`${!payment && "border-red-500"}`} id='payment-check'/>
           <label className={`${!payment && "text-red-500"}`} htmlFor="payment-check">Payment Recieved</label>
       </div>
-        <Link aria-disabled={payment} href={"/captain/home"} className={`w-full flex justify-center mt-1 py-2 font-semibold text-white ${payment?"bg-green-600":"bg-gray-400"} rounded-lg `}>Finish Ride</Link> 
+        <button onClick={rideFinished} disabled={payment} className={`w-full flex justify-center mt-1 py-2 font-semibold text-white ${payment?"bg-green-600":"bg-gray-400"} rounded-lg `}>Finish Ride</button> 
       </div>
     </>
   )

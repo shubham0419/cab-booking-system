@@ -1,10 +1,13 @@
 "use client"
-import { setCurrentRide } from '@/lib/features/ride/rideSlice';
+import LiveTracking from '@/components/LiveTracking';
+import RideTracking from '@/components/RideTracking';
+import { clearCurrentRide, setCurrentRide, setRideEnded } from '@/lib/features/ride/rideSlice';
+import { onMessage } from '@/lib/socket';
 import { RootState } from '@/lib/store';
 import RideServices from '@/services/ride.service';
 import { Banknote, House, IndianRupee, MapPinned } from 'lucide-react'
 import Link from 'next/link'
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -13,6 +16,7 @@ const Page = () => {
   const ride = useSelector((state: RootState) => state.ride.currentRide) as Ride;
   const dispatch = useDispatch();
   const rideService = RideServices;
+  const router = useRouter();
 
   const params = useParams();
   const id = params.id as string;
@@ -23,6 +27,11 @@ const Page = () => {
       dispatch(setCurrentRide(res.data.ride));
     }
   }
+  onMessage("ride-ended", (data) => {
+    dispatch(setRideEnded(true));
+    dispatch(clearCurrentRide())
+    router.push("/home");
+  })
 
   useEffect(() => {
     getRide();
@@ -35,7 +44,7 @@ const Page = () => {
       </Link>
       
       <div className='h-1/2'>
-        <img className='w-full h-full object-cover' src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif" alt="" />
+      <RideTracking />
       </div>
       <div className='h-1/2 rounded-lg'>
         <div className='flex justify-between px-4 py-4'>

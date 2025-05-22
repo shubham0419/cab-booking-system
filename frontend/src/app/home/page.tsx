@@ -12,11 +12,14 @@ import { setActiveInput, setCurrentRide, setDestination, setLoading, setPickup }
 import { RootState } from '@/lib/store';
 import Loader from '@/components/Loader';
 import { onMessage, sendMessage } from '@/lib/socket';
+import LiveTracking from '@/components/LiveTracking';
+import RideFinished from '@/components/RideFinished';
 
 const Page = () => {
   const [panelOpen,setPanelOpen] = useState(false);
   const [vehiclePanelOpen,setVehiclePanelOpen] = useState(false);
   const [bookingWaiting,setBookingWaiting] = useState(false);
+  const isRideEnded = useSelector((state: RootState) => state.ride.isEnded);
   const panelRef = useRef(null);
   const vehiclePanelRef = useRef(null);
   const bookingWaitingRef = useRef(null);
@@ -69,14 +72,16 @@ const Page = () => {
     sendMessage("join", { userType: "user", userId:user?._id });
   }, [user]);
 
+  console.log(isRideEnded);
 
   return (
     <div className='h-screen relative'>
-      <h2 className='w-16 absolute left-5 top-5 text-black font-bold text-4xl'>Uber</h2>
+      <h2 className='w-16 absolute left-5 top-14 text-black font-bold text-4xl z-10'>Uber</h2>
       <div className='h-screen w-screen'>
-        <img className='h-full w-full object-cover' src="https://i2-prod.mylondon.news/article16106961.ece/ALTERNATES/s615/2_Uber-pink-cars.jpg" alt="" />
+        <LiveTracking/>
       </div>
-      <div className='absolute top-0 flex flex-col h-screen justify-end w-full'>
+      <RideFinished isOn={isRideEnded?isRideEnded:false}/>
+      <div className='absolute top-0 flex flex-col h-screen justify-end w-full z-20'>
         <div className='h-[30%] p-4 bg-white relative rounded-t-md'>
           <ChevronDown onClick={(e)=>{e.stopPropagation();setPanelOpen(false)}} className={`text-gray-600 absolute top-3 right-5 ${!panelOpen && "hidden"}`}/>
           <h4 className='font-semibold text-3xl text-black'>Find a trip</h4>
@@ -88,14 +93,14 @@ const Page = () => {
             <div className='w-2 h-2  bg-black absolute top-[6.7rem] left-[1.15rem]'></div>
           </form>
         </div>
-        <div ref={panelRef} className={`h-[0] bg-white px-1 pt-2`}>
+        <div ref={panelRef} className={`h-[0] bg-white px-1 pt-2 z-20`}>
           <LocationSearchPanel setPanelOpen={setPanelOpen} setVehiclePanelOpen={setVehiclePanelOpen}/>
         </div>
-        <div ref={vehiclePanelRef} className='fixed bottom-0 z-10 p-3 py-6 text-black bg-white w-full translate-y-full pt-10 rounded-lg'>
+        <div ref={vehiclePanelRef} className='fixed bottom-0 z-30 p-3 py-6 text-black bg-white w-full translate-y-full pt-10 rounded-lg'>
           <ChevronDown onClick={()=>{setPanelOpen(true);setVehiclePanelOpen(false)}} className='absolute top-1 left-[48%] scale-x-150 text-gray-300 '/>
           <VehiclePanel setVehiclePanelOpen={setVehiclePanelOpen} setBookingWaiting={setBookingWaiting} vehiclePanelOpen={vehiclePanelOpen}/>
         </div>
-        <div ref={bookingWaitingRef} className='fixed bottom-0 z-10 py-4 pt-6 text-black bg-white w-full translate-y-full rounded-lg'>
+        <div ref={bookingWaitingRef} className='fixed bottom-0 z-30 py-4 pt-6 text-black bg-white w-full translate-y-full rounded-lg'>
           <ChevronDown onClick={()=>{setVehiclePanelOpen(true);setBookingWaiting(false)}} className='absolute top-1 left-[48%] scale-x-150 text-gray-300 '/>
           {loading?<div className='w-full'>
             <h2 className='text-xl font-semibold border-b border-gray-200 text-center pb-1 mb-2'>Looking for driver...</h2>

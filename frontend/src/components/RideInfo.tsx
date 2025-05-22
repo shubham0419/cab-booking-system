@@ -11,7 +11,7 @@ const RideInfo = () => {
   const ride = useSelector((state: RootState) => state.ride.currentRide) as Ride;
 
   onMessage("ride-started", (data: any) => {
-    router.push(`/riding/${data.rideId}`);
+    router.push(`/riding/${data._id}`);
   })
 
   return (

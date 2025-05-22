@@ -46,6 +46,15 @@ const rideSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  destnationCord:{
+    ltd:{
+      type:Number,
+    },
+    lng:{
+      type:Number,
+    }
+  }
+
 });
 
 module.exports = mongoose.model("Ride", rideSchema);

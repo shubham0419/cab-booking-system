@@ -2,8 +2,11 @@
 import CaptainDetails from '@/components/captain/CaptainDetails'
 import ConfirmRidePopup from '@/components/captain/ConfirmRidePopup'
 import RidePopup from '@/components/captain/RidePopup'
+import LiveTracking from '@/components/LiveTracking'
+import RideFinished from '@/components/RideFinished'
 import { setCurrentRide, setLoading } from '@/lib/features/ride/rideSlice'
 import { onMessage, sendMessage } from '@/lib/socket'
+import { RootState } from '@/lib/store'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { Banknote, ChevronDown, House, LogOut, MapPinned } from 'lucide-react'
@@ -14,7 +17,8 @@ import { useDispatch, useSelector } from 'react-redux'
 const Page = () => {
   const [isBooking,setIsBooking] = useState(false);
   const [confirmRidePanel,setConfirmRidePanel] = useState(false);
-  const captain = useSelector((state:any) => state.captain.currentCaptain) as Captain;
+  const captain = useSelector((state:RootState) => state.captain.currentCaptain) as Captain;
+  const isRideEnded = useSelector((state:RootState) => state.ride.isEnded);
   const bookingPopupRef = useRef(null);
   const confirmRidePanelRef = useRef(null);
   const dispatch = useDispatch();
@@ -73,15 +77,15 @@ const Page = () => {
 
   return (
     <div className='h-screen bg-white text-black relative w-screen'>
-      <div className='fixed top-5 w-full flex justify-between px-5'>
+      <div className='fixed top-16 w-full flex justify-between px-5 z-50'>
       <img className='h-7' src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png" alt="" />
       <Link href={"/home"} className='p-2 bg-white rounded-full'>
         <LogOut size={20} />
       </Link>
       </div>
-      
+      <RideFinished isOn={isRideEnded?isRideEnded:false}/>
       <div className='h-2/3'>
-        <img className='w-full h-full object-cover' src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif" alt="" />
+      <LiveTracking/>
       </div>
       <div className='h-1/3 rounded-lg p-5'>
         <CaptainDetails/>

@@ -14,7 +14,7 @@ const createRide = async (req, res) => {
     if (!pickup || !destination || !vehicleType) {
       return res.status(400).json({ message: "Please provide all fields" });
     }
-
+    const destnationCord = await getAddressCordinates(destination);
     const distanceTime = await getDistanceAndTime(pickup, destination);
 
     const fare = await getFare(pickup, destination);
@@ -29,6 +29,7 @@ const createRide = async (req, res) => {
       status: "pending",
       duration: distanceTime.duration.value,
       distance: distanceTime.distance.value,
+      destnationCord
     });
     const cordinates = await getAddressCordinates(pickup);
     const captainsInRadius = await getCaptainsInRadius(cordinates, 3);
@@ -41,9 +42,6 @@ const createRide = async (req, res) => {
         data: rideWithUser,
       });
     });
-    console.log(cordinates);
-    console.log(rideWithUser);
-    console.log(captainsInRadius);
     res.json(wrapperMessage("success", "Ride created successfully", { ride }));
   } catch (error) {
     console.error("Error creating ride:", error);
@@ -139,7 +137,28 @@ const getRideInfo = async (req, res) => {
   }
 }
 
-const endRide = async (req, res) => {};
+const endRide = async (req, res) => {
+  const { rideId} = req.query;
+  try {
+    if (!rideId) {
+      return res.status(400).json({ message: "Please provide all fields" });
+    }
+    const ride = await Ride.findOne({ _id: rideId }).populate("user").populate("captain");
+    if (!ride) {
+      return res.status(404).json({ message: "Ride not found" });
+    }
+    sendMessageToSocketId(ride.user.socketId, {
+      event: "ride-ended",
+      data: ride,
+    });
+    ride.status = "completed";
+    await ride.save();
+    res.json(wrapperMessage("success", "Ride ended successfully", { ride }));
+  } catch (error) {
+    console.error("Error ending ride:", error);
+    res.status(error.code || 500).json(wrapperMessage("failed", error.message));
+  } 
+};
 
 module.exports = {
   createRide,
