@@ -11,7 +11,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.get("/",async (req, res) => {
-  await connectDB();
   res.send("hii")
 });
 
