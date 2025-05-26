@@ -41,7 +41,7 @@ export async function middleware(request: NextRequest) {
   // If token exists, validate the user
   if (token) {
     try {
-      const res = await axios.get(`${process.env.API_BASE_URL || "http://localhost:4000"}/current-user`, {
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000"}/current-user`, {
         headers: {
           Authorization: `Bearer ${token}`
         },
