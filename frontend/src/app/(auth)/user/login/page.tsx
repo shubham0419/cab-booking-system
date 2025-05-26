@@ -20,6 +20,8 @@ const UserLogin: React.FC = () => {
   const userservices = UserServices;
   const dispatch = useDispatch();
 
+  console.log(process.env.NEXT_PUBLIC_API_BASE_URL);
+
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const userData: UserData = {
