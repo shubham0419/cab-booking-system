@@ -10,7 +10,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.get("/", (req, res) => {res.send("hii")});
+app.get("/", (req, res) => {
+  console.log("object");
+  res.send("hii")
+});
 
 // routers
 const userRouter = require("./routes/user.routes");
