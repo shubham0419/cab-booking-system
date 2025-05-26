@@ -3,6 +3,23 @@ declare interface captainData {
   password: string;
 }
 
+declare type registerCaptainData = {
+  
+    fullName: {
+        firstName: string;
+        lastName: string;
+    };
+    email: string;
+    password: string;
+    vehicle: {
+        color: string;
+        plate: string;
+        capacity: string;
+        vehicleType: string;
+    };
+
+}
+
 declare interface CaptainResponseData {
   captain: any;
   token: string;
@@ -48,6 +65,10 @@ declare interface Captain {
   socketId?: string; // Optional
   status: 'active' | 'inactive'; // Default is 'active'
   vehicle: Vehicle;
+  rideInfo?: {
+    rideId:string,
+    isRideActive:boolean,
+  };  
   location?: Location; // Optional
   _id?: string; // MongoDB generated ID
   createdAt?: Date; // Mongoose timestamps

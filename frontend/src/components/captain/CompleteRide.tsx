@@ -15,6 +15,7 @@ const CompleteRide = () => {
   const router = useRouter()
 
   const rideFinished = async() => {
+    console.log("object");
     const res = await rideServices.endRide(ride._id);
     if(res.status === "success"){
       dispatch(clearCurrentRide());
@@ -61,7 +62,7 @@ const CompleteRide = () => {
           <Checkbox onCheckedChange={()=>setPayment(prev=>!prev)} className={`${!payment && "border-red-500"}`} id='payment-check'/>
           <label className={`${!payment && "text-red-500"}`} htmlFor="payment-check">Payment Recieved</label>
       </div>
-        <button onClick={rideFinished} disabled={payment} className={`w-full flex justify-center mt-1 py-2 font-semibold text-white ${payment?"bg-green-600":"bg-gray-400"} rounded-lg `}>Finish Ride</button> 
+        <button onClick={rideFinished} disabled={payment?false:true} className={`w-full flex justify-center mt-1 py-2 font-semibold text-white ${payment?"bg-green-600":"bg-gray-400"} rounded-lg `}>Finish Ride</button> 
       </div>
     </>
   )

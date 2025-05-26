@@ -46,11 +46,10 @@ const Page = () => {
     <div className='h-screen bg-white text-black relative w-screen'>
       <div className='fixed top-5 w-full flex justify-between px-5'>
         <img className='h-7' src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png" alt="" />
-
       </div>
 
       <div className='h-4/5'>
-      <RideTracking/>
+        <RideTracking />
       </div>
       <div className='h-1/5 p-5 bg-yellow-400 flex justify-between items-center relative'>
         <ChevronUp onClick={() => setCompletePanel(true)} className='absolute top-1 left-[49%] scale-x-150 text-gray-500 ' />

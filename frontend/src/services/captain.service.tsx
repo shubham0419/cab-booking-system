@@ -26,10 +26,10 @@ export default class CaptainServices {
     })
   }
 
-  static registerCaptain = (captainData:captainData)=>{
+  static registerCaptain = (captainData:registerCaptainData)=>{
     return new Promise<CaptainloginType>(async (resolve,reject)=>{
       try {
-        let res = await axios.post(API_CONSTANTS.registerUser,captainData);
+        let res = await axios.post(API_CONSTANTS.registerCaptain,captainData);
         if (res?.data?.status == "failed") throw res.data.message;
         return resolve(JSON.parse(JSON.stringify(res.data)) as CaptainloginType);
       } catch (error:any) {

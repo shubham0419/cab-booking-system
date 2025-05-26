@@ -30,6 +30,10 @@ declare interface User {
   email: string; // Required, minimum 5 characters, must be valid email format
   password: string; // Required, not selected by default in queries
   socketId?: string; // Optional
+  rideInfo?: {
+    rideId:string,
+    isRideActive:boolean,
+  }; 
   _id?: string; // MongoDB generated ID
   createdAt?: Date; // Mongoose timestamps
   updatedAt?: Date; // Mongoose timestamps

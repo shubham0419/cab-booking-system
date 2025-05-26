@@ -1,14 +1,13 @@
 "use client"
-import LiveTracking from '@/components/LiveTracking';
 import RideTracking from '@/components/RideTracking';
 import { clearCurrentRide, setCurrentRide, setRideEnded } from '@/lib/features/ride/rideSlice';
 import { onMessage } from '@/lib/socket';
 import { RootState } from '@/lib/store';
 import RideServices from '@/services/ride.service';
-import { Banknote, House, IndianRupee, MapPinned } from 'lucide-react'
-import Link from 'next/link'
+import { Banknote, House, IndianRupee, MapPinned } from 'lucide-react';
+import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 
@@ -42,11 +41,11 @@ const Page = () => {
       <Link href={"/home"} className='fixed top-5 right-3 p-2 bg-white rounded-full'>
         <House size={20} />
       </Link>
-      
-      <div className='h-1/2'>
+       
+      <div className='h-3/5'>
       <RideTracking />
       </div>
-      <div className='h-1/2 rounded-lg'>
+      <div className='h-1/5 rounded-lg pt-5'>
         <div className='flex justify-between px-4 py-4'>
           <img className='h-12' src="https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_538,w_956/v1688398971/assets/29/fbb8b0-75b1-4e2a-8533-3a364e7042fa/original/UberSelect-White.png" alt="" />
           <div className='text-right'>

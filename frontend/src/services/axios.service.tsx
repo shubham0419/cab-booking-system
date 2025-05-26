@@ -1,33 +1,40 @@
 import API_CONSTANTS from '@/constants/apiConstant';
 import axios from 'axios';
 
-
 const axiosObject = axios.create({
   baseURL: API_CONSTANTS.BASE_URL
 });
 
 axiosObject.interceptors.request.use(
   config => {
-      const getCookie = (name : string) : any => {
-        if (typeof window === 'undefined') return null;
-        var nameEQ = name + "=";
-        var ca = document.cookie.split(';');
-        for (var i = 0; i < ca.length; i++) {
-          var c = ca[i];
-          while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-          if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-        }
-        return null;
+    const getCookie = (name: string): string | null => {
+      // Only run on client side
+      if (typeof window === 'undefined') return null;
+      
+      const nameEQ = name + "=";
+      const ca = document.cookie.split(';');
+      for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
       }
-      config.headers.authorization = `Bearer ${getCookie("cabtoken")}`;
-      return config;
+      return null;
+    };
+
+    // Only add authorization header on client side
+    if (typeof window !== 'undefined') {
+      const token = getCookie("cabtoken");
+      if (token) {
+        config.headers.authorization = `Bearer ${token}`;
+      }
+    }
+    
+    return config;
   },
   error => { 
     return Promise.reject(error);
   }
 );
-
-
 
 type JSONValue = string | number | boolean | null | JSONObject | JSONArray;
 type JSONObject = { [key: string]: JSONValue };

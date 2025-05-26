@@ -98,8 +98,8 @@ export default class RideServices {
   static endRide = (rideId:string)=>{
     return new Promise<CreateRideResType>(async (resolve,reject)=>{
       try {
-        let res = await axios.post(API_CONSTANTS.endRide,{
-            rideId,
+        let res = await axios.get(API_CONSTANTS.endRide,{
+          params:{rideId},
         });
         if (res?.data?.status == "failed") return reject(res.data.message);
         return resolve(JSON.parse(JSON.stringify(res.data)) as CreateRideResType);
