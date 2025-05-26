@@ -37,13 +37,15 @@ function initializeSocket(server) {
         socket.on('update-location-captain', async (data) => {
             const { userId, location } = data;
 
-            if (!location || !location.ltd || !location.lng) {
+            if (!location || !location.lat || !location.lng) {
                 return socket.emit('error', { message: 'Invalid location data' });
             }
 
+            console.log(location);
+
             await captainModel.findByIdAndUpdate(userId, {
                 location: {
-                    ltd: location.ltd,
+                    lat: location.lat,
                     lng: location.lng
                 }
             });

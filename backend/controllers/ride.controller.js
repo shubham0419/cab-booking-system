@@ -5,7 +5,9 @@ const {
 } = require("../helper/maps");
 const { getFare, getOtp } = require("../helper/ride");
 const wrapperMessage = require("../helper/wrapperMessage");
+const Captain = require("../models/captain.model");
 const Ride = require("../models/ride.model");
+const User = require("../models/user.model");
 const { sendMessageToSocketId } = require("../socket");
 
 const createRide = async (req, res) => {
@@ -33,6 +35,8 @@ const createRide = async (req, res) => {
     });
     const cordinates = await getAddressCordinates(pickup);
     const captainsInRadius = await getCaptainsInRadius(cordinates, 3);
+
+    console.log(captainsInRadius);
 
     const rideWithUser = await Ride.findOne({ _id: ride._id }).populate("user");
     rideWithUser.otp = "";
@@ -100,6 +104,7 @@ const startRide = async (req, res) => {
     if (!rideId || !otp) {
       return res.status(400).json({ message: "Please provide all fields" });
     }
+
     const ride = await Ride.findOne({ _id: rideId }).populate("user");
     if (!ride) {
       return res.status(404).json({ message: "Ride not found" });
@@ -107,6 +112,25 @@ const startRide = async (req, res) => {
     if (ride.otp !== otp) {
       return res.status(400).json({ message: "Invalid OTP" });
     }
+
+    Promise.all([
+      await User.findByIdAndUpdate(
+        { _id: ride.user._id },
+        { 
+          rideInfo: {
+            isRideActive: true,
+            rideId: ride._id,
+          },
+         },
+      ),
+      await Captain.findByIdAndUpdate(
+        { _id: ride.captain },
+        { rideInfo: {
+            isRideActive: true,
+            rideId: ride._id,
+        }},
+      ),
+    ])
     sendMessageToSocketId(ride.user.socketId, {
       event: "ride-started",
       data: ride,
@@ -147,6 +171,22 @@ const endRide = async (req, res) => {
     if (!ride) {
       return res.status(404).json({ message: "Ride not found" });
     }
+    Promise.all([
+      await User.findByIdAndUpdate(
+        { _id: ride.user._id },
+        { rideInfo: {
+          isRideActive: false,
+          rideId: null,
+        } },
+      ),
+      await Captain.findByIdAndUpdate(
+        { _id: ride.captain._id },
+        { rideInfo: {
+          isRideActive: false,
+          rideId: null,
+        }},
+      ),
+    ])
     sendMessageToSocketId(ride.user.socketId, {
       event: "ride-ended",
       data: ride,

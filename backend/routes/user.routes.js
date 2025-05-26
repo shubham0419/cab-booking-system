@@ -13,7 +13,7 @@ router.post("/register",[
 router.post("/login",[
   body('email').isEmail().withMessage("Invalid email"),
   body("password").isLength({min:6}).withMessage("password must have alteast 6 character")
-],loginUser)
+],loginUser);
 
 router.get("/logout",authUser,logoutUser);
 

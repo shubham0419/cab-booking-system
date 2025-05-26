@@ -47,7 +47,7 @@ const rideSchema = new mongoose.Schema({
     required: true,
   },
   destnationCord:{
-    ltd:{
+    lat:{
       type:Number,
     },
     lng:{

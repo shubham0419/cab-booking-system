@@ -9,7 +9,7 @@ module.exports.getAddressCordinates = async (address) => {
     );
     if (data.status === "OK") {
       return {
-        ltd: data.results[0].geometry.location.lat,
+        lat: data.results[0].geometry.location.lat,
         lng: data.results[0].geometry.location.lng,
       };
     }
@@ -28,6 +28,7 @@ module.exports.getDistanceAndTime = async (origin, destination) => {
     const { data } = await axios.get(
       `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origin}&destinations=${destination}&key=${apiKey}`
     );
+  
     if (data.status === "OK") {
       if (data.rows[0].elements[0].status == "ZERO_RESULTS") {
         throw new Error("no result found");
@@ -62,11 +63,12 @@ module.exports.getAddressSuggestions = async (address) => {
 
 
 module.exports.getCaptainsInRadius = async (location, radius) => {
+  console.log(location);
   try {
     const captains = await Captain.find({
         location: {
             $geoWithin: {
-                $centerSphere: [ [ location.ltd, location.lng ], radius / 6371 ]
+                $centerSphere: [ [ location.lat, location.lng ], radius / 6371 ]
             }
         }
     });

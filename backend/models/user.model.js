@@ -27,6 +27,16 @@ const userSchema = new mongoose.Schema({
     required:true,
     select:false
   },
+  rideInfo:{
+    isRideActive:{
+      type:Boolean,
+      default:false
+    },
+    rideId:{
+      type:mongoose.Schema.Types.ObjectId,
+      ref:"Ride"
+    }
+  },
   socketId:{
     type:String
   }
