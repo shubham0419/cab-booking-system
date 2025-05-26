@@ -10,8 +10,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.get("/", (req, res) => {
-  console.log("object");
+app.get("/",async (req, res) => {
+  await connectDB();
   res.send("hii")
 });
 
