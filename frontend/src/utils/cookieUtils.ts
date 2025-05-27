@@ -28,6 +28,8 @@ export const cookieUtils = {
     Cookies.set(name, value, {
       secure: true, // HTTPS only
       sameSite: 'lax',
+      path:"/",
+      expires: 7, 
       ...options,
     });
   },

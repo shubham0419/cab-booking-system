@@ -48,7 +48,7 @@ const UserLogin: React.FC = () => {
 
       if (response.status == "success") {
         const data = response.data
-        cookieUtils.setSecureCookie("cabtoken",data.token,{expires:7});
+        cookieUtils.setSecureCookie("cabtoken",data.token);
         dispatch(setCaptain(data.captain))
         router.push('/captain/home');
       }
