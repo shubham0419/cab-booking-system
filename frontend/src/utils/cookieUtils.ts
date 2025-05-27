@@ -27,7 +27,7 @@ export const cookieUtils = {
   setSecureCookie: (name: string, value: string, options?: Cookies.CookieAttributes) => {
     Cookies.set(name, value, {
       secure: true, // HTTPS only
-      sameSite: 'strict',
+      sameSite: 'lax',
       ...options,
     });
   },
