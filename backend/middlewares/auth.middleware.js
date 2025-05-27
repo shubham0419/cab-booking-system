@@ -8,7 +8,7 @@ const Captain = require("../models/captain.model");
 module.exports.authUser = async (req, res, next) => {
   try {
     
-    const token = req.cookies?.token || req.headers.authorization.split(" ")[1];
+    const token = req.headers.authorization.split(" ")[1];
     if (!token) {
       let err = new Error("Please provide token");
       err.code = 401;
@@ -30,7 +30,7 @@ module.exports.authUser = async (req, res, next) => {
 
 module.exports.authCaptain = async (req, res, next) => {
   try {
-    const token = req.cookies?.token || req.headers.authorization.split(" ")[1];
+    const token = req.headers.authorization.split(" ")[1];
     if (!token) {
       let err = new Error("Please provide token");
       err.code = 401;
@@ -52,7 +52,7 @@ module.exports.authCaptain = async (req, res, next) => {
 
 module.exports.currentUser = async(req,res)=>{
   try {
-    const token = req.cookies?.token || req.headers.authorization.split(" ")[1];
+    const token = req.headers.authorization.split(" ")[1];
     const decode =  jwt.verify(token, process.env.JWT_SECRET);
     let currUser;
 

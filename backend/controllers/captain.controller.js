@@ -77,7 +77,7 @@ module.exports.loginCaptain = async (req, res) => {
       err.code = 400;
       throw err;
     }
-    console.log(user);
+    
     const isMatch = await user.comparePassword(password);
     if(!isMatch){
       let err = new Error("Invalid email or password");
@@ -85,12 +85,6 @@ module.exports.loginCaptain = async (req, res) => {
       throw err;
     }
     const token = user.generateAuthToken();
-    res.cookie("token",token,{
-      httpOnly:true,
-      secure:process.env.NODE_ENV === "production",
-      sameSite:process.env.NODE_ENV === "production" ? "none" : "lax",
-      maxAge: 24 * 60 * 60 * 1000
-    })
     res.json(wrapperMessage("success","user logged in successfully",{token,captain:user}))
   } catch (error) {
     res.status(error.code || 500).json(wrapperMessage("failed",error.message))
@@ -99,8 +93,7 @@ module.exports.loginCaptain = async (req, res) => {
 
 module.exports.logoutCaptain = async (req,res)=>{
   try {
-    res.clearCookie("token");
-    const token = req.cookies.token || req.headers?.authorization?.split(" ")[1];
+    const token = req.headers?.authorization?.split(" ")[1];
     await blacklistToken.create({token});
     res.json(wrapperMessage("success","user logged out successfully",{}))
   } catch (error) {
