@@ -1,11 +1,11 @@
 "use client"
-import React, { useState, ChangeEvent, FormEvent } from 'react'
+import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react'
 
 import axios from 'axios'
 import Link from 'next/link';
 import UserServices from '@/services/user.services';
 import { useRouter } from 'next/navigation';
-import { cookieUtils } from '@/utils/cookieUtils';
+import { cookieDebug, cookieUtils } from '@/utils/cookieUtils';
 import { useDispatch } from 'react-redux';
 import { setUser } from '@/lib/features/user/userSlice';
 
@@ -46,6 +46,11 @@ const UserLogin: React.FC = () => {
       // Handle error here
     }
   }
+
+  useEffect(() => {
+    cookieDebug.checkEnvironment();
+    cookieDebug.debugCookie('testCookie', 'testValue');
+  }, []);
 
   return (
     <div className='p-7 pb-2 h-screen flex flex-col justify-between bg-white text-black'>
