@@ -28,6 +28,7 @@ export const cookieUtils = {
     Cookies.set(name, value, {
       secure: true, // HTTPS only
       sameSite: 'lax',
+      httpOnly: true,
       ...options,
     });
   },
